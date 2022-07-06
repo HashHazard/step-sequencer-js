@@ -1,0 +1,13 @@
+body {
+  background: #ffe600;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border: 5px solid rebeccapurple;
+  height: 100vh;
+}

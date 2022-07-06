@@ -1,0 +1,27 @@
+.grid {
+  display: flex;
+  border: 2px solid rgb(255, 255, 255);
+}
+
+.cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  background-color: #310735;
+  border: 2px solid #ffffff00;
+  width: 4vw;
+  height: 4vw;
+  transition: all 60ms ease;
+  margin: 5px;
+}
+.cell-active {
+  background: #eee;
+  color: black;
+  /* font-size: 50px; */
+}
+
+.cell:hover {
+  /* transform: scale(1.2); */
+  background: rgb(110, 104, 104);
+}
