@@ -1,0 +1,60 @@
+.tool-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.card {
+  margin: 2rem auto;
+  width: 200px;
+}
+
+.gradient-border {
+  background-image: linear-gradient(45deg, #ff8a00, #e52e71);
+  border-radius: 16px;
+  padding: 8px;
+}
+
+.content-wrapper {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
+  padding: 35px;
+  text-align: center;
+  transition: all 0.1s ease-in;
+  cursor: pointer;
+  user-select: none;
+}
+.content-wrapper:hover {
+  color: #ff7a18;
+  box-shadow: none;
+}
+.content-wrapper:active {
+  /* box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.25); */
+  box-shadow: inset 0 4px 5px rgba(0, 0, 0, 0.25);
+}
+
+input[type='number'] {
+  padding: 10px;
+  border: 1px solid #ff7a18;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
+  width: 100px;
+  height: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+label {
+  padding: 10px;
+  /* background: #e52e71; */
+  /* width: 100px; */
+  /* color: white; */
+  background: white;
+  border: 0;
+  border-radius: 10px;
+  box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
+  height: 20px;
+  /* padding-bottom: 100px; */
+  margin-right: 40px;
+}
