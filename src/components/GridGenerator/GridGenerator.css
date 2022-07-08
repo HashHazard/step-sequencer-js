@@ -20,19 +20,21 @@
 }
 
 .button {
-  background-color: #fff;
-  border: 1px solid #cacaca;
-  border-radius: 4px;
+  /* background-color: #fff; */
+  /* border: 1px solid #cacaca; */
+  /* color: #ff7a18; */
+  /* max-width: 50px; */
+  /* margin: 100px auto; */
+  background: var(--button-off-color);
+  border-radius: 2px;
+  /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25); */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
-  color: #ff7a18;
   cursor: pointer;
   padding: 15px 25px;
   transition: all 0.1s ease-in;
   height: 25px;
   width: 25px;
   margin: 2px;
-  /* max-width: 50px; */
-  /* margin: 100px auto; */
   text-align: center;
   user-select: none;
 }
@@ -43,12 +45,22 @@
 }
 
 .button:active {
-  /* box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.25); */
   box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.25);
+  /* box-shadow: inset 0 2px 5px rgba(0,255,255,0.25) */
 }
 
 .button-on {
-  background: #ff7a18;
+  /* background: #ff7a18; */
+  transform: scale(0.95);
+  background: var(--secondary-color);
+}
+
+.button-scale{
+  transform: scale(1.05);
+}
+
+.button-highlight {
+  background: var(--button-highlight-color);
 }
 
 .led-container {
@@ -70,10 +82,10 @@
 
 .led {
   border: 0;
-  background-color: #fff;
+  background-color: var(--led-off-color);
   /* border: 1px solid #cacaca; */
   border-radius: 4px;
-  box-shadow: 0 0px 2px rgba(0, 0, 0, 0.25);
+  /* box-shadow: 0 0px 2px rgba(0, 0, 0, 0.25); */
   /* color: #ff7a18; */
   cursor: pointer;
   /* padding: 15px 25px; */
@@ -86,7 +98,47 @@
   user-select: none;
 }
 
-.led-on{
-  background: #F57C00;
-  box-shadow: 0 0px 20px rgba(255, 136, 0, 0.8);
+.led-on {
+  background: var(--secondary-color);
+  box-shadow: 0 0 16px 2px rgba(0, 255, 255, 0.7);
+  /* box-shadow: 0px 5px 10px 0px rgba(0,255,255,0.7);   */
+  /* box-shadow: 0px 1px 2px 0px rgba(0,255,255,0.7),
+            1px 2px 4px 0px rgba(0,255,255,0.7),
+            2px 4px 8px 0px rgba(0,255,255,0.7),
+            2px 4px 8px 0px rgba(0,255,255,0.7); */
+  /* background: #f57c00; */
+  /* box-shadow: 0 0px 20px rgba(255, 136, 0, 0.8); */
+}
+
+/* 
+body {
+  height: 100vh;
+  width: 100%;
+  background: #2c2c2c;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+div {
+  height: 150px;
+  width: 150px;
+  background: #2c2c2c;
+  border-radius: 15px;
+  margin: 20px;
+  transition: all ease 0.2s;
+  border: 1px solid #333;
+} */
+.box1 {
+  box-shadow: 0px 5px 10px 0px rgba(0, 255, 255, 0.7);
+}
+.box2 {
+  box-shadow: inset 0px 5px 10px 0px rgba(0, 255, 255, 0.7);
+}
+.box1:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 10px 20px 2px rgba(0, 255, 255, 0.7);
+}
+.box2:hover {
+  transform: translateY(5px);
+  box-shadow: inset 0px 10px 20px 2px rgba(0, 255, 255, 0.7);
 }

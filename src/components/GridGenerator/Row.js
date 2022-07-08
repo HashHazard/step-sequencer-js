@@ -3,16 +3,25 @@ import { useEffect, useRef, useState } from 'react';
 
 import './GridGenerator.css';
 
-const Cell = ({ on, onClick, onContextMenu }) => {
-  const buttonStyle = on ? 'button button-on' : 'button';
+const Cell = ({
+  on,
+  mouseClicked,
+  setMouseClicked,
+  cellHighlight,
+  onClick,
+  onContextMenu,
+}) => {
+  const active = cellHighlight ? 'button-highlight' : '';
+  const scaleButton = on && active ? 'button-scale' : '';
+  const buttonOn = on ? `button button-on ${scaleButton}` : `button ${active}`;
   return (
     <div
-      className={buttonStyle}
+      className={buttonOn}
       onClick={onClick}
+      onMouseDown={() => console.log('moused pressed')}
+      onMouseUp={() => console.log('moused unpressed')}
       onContextMenu={onContextMenu}
-    >
-      {/* {on ? 'A' : ''} */}
-    </div>
+    ></div>
   );
 };
 
@@ -21,20 +30,10 @@ const Row = ({ cellActive, numSteps, instrument }) => {
   const initialCellsState = Array.from({ length: numSteps }, () => false);
   const [cells, setCells] = useState(initialCellsState);
 
+  const [mouseClicked, setMouseClicked] = useState(false);
+
   // Reinitialize cells state when number of steps changes
   useEffect(() => setCells(initialCellsState), [numSteps]);
-
-  // const [isLoaded, setLoaded] = useState(false);
-
-  //   sampler.current = new Sampler(
-  //     { hihat },
-  //     {
-  //       onload: () => {
-  //         setLoaded(true);
-  //       },
-  //     }
-  //   ).toDestination();
-  // }, []);
 
   const synth = useRef(null);
   const crusher = useRef(null);
@@ -44,14 +43,11 @@ const Row = ({ cellActive, numSteps, instrument }) => {
     // synth.current = new PolySynth(MembraneSynth).toDestination()
 
     synth.current = new Player(instrument).toDestination();
-    
 
     // synth.current = new Player(instrument);
 
-
     // crusher.current = new BitCrusher(16)
     // distortion.current = new Distortion()
-
 
     // synth.current.chain(crusher.current, Destination)
 
@@ -73,6 +69,7 @@ const Row = ({ cellActive, numSteps, instrument }) => {
   }, [cellActive]);
 
   const cellOnClick = (i) => (e) => {
+    // if (mouseClicked)
     setCells(
       cells.map((cell, cellIndex) => {
         if (cellIndex === i) {
@@ -93,6 +90,9 @@ const Row = ({ cellActive, numSteps, instrument }) => {
         <Cell
           key={cellIndex}
           on={cell}
+          mouseClicked={mouseClicked}
+          setMouseClicked={setMouseClicked}
+          cellHighlight={cellActive[cellIndex]}
           onClick={cellOnClick(cellIndex)}
           onContextMenu={onRightClick}
         />

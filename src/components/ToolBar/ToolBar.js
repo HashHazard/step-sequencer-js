@@ -33,7 +33,7 @@ const Tempo = ({ beatDuration, setBeatDuration }) => {
       <label>
         Tempo
         <input
-          style={{ background: `${invalid ? '#F04E5B' : 'white'}` }}
+          style={{ background: `${invalid ? '#f2dede' : 'white'}` }}
           type="number"
           defaultValue={120}
           onChange={handleSetTempo}
@@ -81,6 +81,7 @@ const ToolBar = ({
 }) => {
   return (
     <div className="tool-container">
+      {/* <div className='element'></div> */}
       <Play playing={playing} setPlaying={setPlaying} />
       <Tempo beatDuration={beatDuration} setBeatDuration={setBeatDuration} />
       <StepSize
