@@ -37,21 +37,36 @@ const LEDstrip = ({ cellActive }) => {
   );
 };
 
-const GridGenerator = ({ playing, numSteps, beatDuration }) => {
+const GridGenerator = ({
+  playing,
+  setPlaying,
+  numSteps,
+  tempo,
+  distortionValue,
+  bitCrusherValue,
+  chebyValue,
+  reverbValue
+}) => {
   const initCellActive = () => Array.from({ length: numSteps }, () => false);
   const [cellActive, setCellActive] = useState(initCellActive);
+
+  // Counter index variable
+  const activeCellIndex = useRef(0);
 
   const [drumkit, setDrumkit] = useState(
     Array.from({ length: 9 }, () => false)
   );
 
   // Reinitialize cellActive state when number of steps changes
-  useEffect(() => setCellActive(initCellActive), [numSteps]);
+  useEffect(() => {
+    if (playing) setPlaying(false);
+    activeCellIndex.current = 0;
+    setCellActive(initCellActive);
+  }, [numSteps]);
 
-  // Tick
-  // beat duration = (60 seconds / BPM) * 1000 ms
+  // Counter tick
+  // beat duration = (60 seconds / BPM * 4) * 1000 ms
   const interval = useRef(null);
-  const activeCellIndex = useRef(0);
   useEffect(() => {
     if (playing)
       interval.current = setInterval(() => {
@@ -64,10 +79,10 @@ const GridGenerator = ({ playing, numSteps, beatDuration }) => {
         if (activeCellIndex.current >= numSteps - 1)
           activeCellIndex.current = 0;
         else activeCellIndex.current = activeCellIndex.current + 1;
-      }, beatDuration);
+      }, parseInt(60000 / (tempo * 4)));
     else clearInterval(interval.current);
     return () => clearInterval(interval.current);
-  }, [playing === true, beatDuration]);
+  }, [playing === true, tempo]);
 
   // Tone js synth initialization
   const synth = useRef(null);
@@ -86,6 +101,10 @@ const GridGenerator = ({ playing, numSteps, beatDuration }) => {
             synth={synth.current}
             numSteps={numSteps}
             instrument={kit[drumIndex]}
+            distortionValue={distortionValue}
+            bitCrusherValue={bitCrusherValue}
+            chebyValue={chebyValue}
+            reverbValue={reverbValue}
           />
         );
       })}

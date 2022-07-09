@@ -39,10 +39,10 @@ code {
 }
 
 div {
-  /* margin: 2px;
-  padding: 2px; */
-  /* border: 1px solid gray;
-  border-radius: 0.5rem; */
+  /* margin: 2px; */
+  /* padding: 2px; */
+  border: 1px solid gray;
+  /* border-radius: 0.5rem;  */
 }
 
 body {

@@ -1,16 +1,17 @@
-import { Player, loaded, BitCrusher, Distortion, Destination } from 'tone';
+import {
+  Player,
+  loaded,
+  BitCrusher,
+  Distortion,
+  Destination,
+  Chebyshev,
+  Reverb,
+} from 'tone';
 import { useEffect, useRef, useState } from 'react';
 
 import './GridGenerator.css';
 
-const Cell = ({
-  on,
-  mouseClicked,
-  setMouseClicked,
-  cellHighlight,
-  onClick,
-  onContextMenu,
-}) => {
+const Cell = ({ on, cellHighlight, onClick, onContextMenu }) => {
   const active = cellHighlight ? 'button-highlight' : '';
   const scaleButton = on && active ? 'button-scale' : '';
   const buttonOn = on ? `button button-on ${scaleButton}` : `button ${active}`;
@@ -18,19 +19,23 @@ const Cell = ({
     <div
       className={buttonOn}
       onClick={onClick}
-      onMouseDown={() => console.log('moused pressed')}
-      onMouseUp={() => console.log('moused unpressed')}
       onContextMenu={onContextMenu}
     ></div>
   );
 };
 
 ////// PARENT COMPONENT //////
-const Row = ({ cellActive, numSteps, instrument }) => {
+const Row = ({
+  cellActive,
+  numSteps,
+  instrument,
+  distortionValue,
+  bitCrusherValue,
+  chebyValue,
+  reverbValue
+}) => {
   const initialCellsState = Array.from({ length: numSteps }, () => false);
   const [cells, setCells] = useState(initialCellsState);
-
-  const [mouseClicked, setMouseClicked] = useState(false);
 
   // Reinitialize cells state when number of steps changes
   useEffect(() => setCells(initialCellsState), [numSteps]);
@@ -38,6 +43,8 @@ const Row = ({ cellActive, numSteps, instrument }) => {
   const synth = useRef(null);
   const crusher = useRef(null);
   const distortion = useRef(null);
+  const cheby = useRef(null);
+  const reverb = useRef(null)
   useEffect(() => {
     // synth.current = new Synth().toDestination();
     // synth.current = new PolySynth(MembraneSynth).toDestination()
@@ -46,13 +53,30 @@ const Row = ({ cellActive, numSteps, instrument }) => {
 
     // synth.current = new Player(instrument);
 
-    // crusher.current = new BitCrusher(16)
-    // distortion.current = new Distortion()
+    distortion.current = new Distortion().toDestination()
 
-    // synth.current.chain(crusher.current, Destination)
+    crusher.current = new BitCrusher(16).toDestination()
+    cheby.current = new Chebyshev(1).toDestination()
+
+    reverb.current = new Reverb(undefined).toDestination()
+
+    // synth.current.fan(
+    //   cheby.current,
+    //   crusher.current,
+    //   distortion.current,
+    //   reverb.current,
+    //   // Destination
+    // );
 
     // synth.current = new MembraneSynth().toDestination()
   }, []);
+
+  useEffect(() => {
+    distortion.current.distortion = distortionValue;
+    crusher.current.bits = bitCrusherValue;
+    cheby.current.order = chebyValue;
+    // reverb.current.decay = reverbValue;
+  }, [distortionValue, chebyValue]);
 
   const playSound = () => {
     // const notes = ['D4', 'F4', 'A4']
@@ -69,7 +93,6 @@ const Row = ({ cellActive, numSteps, instrument }) => {
   }, [cellActive]);
 
   const cellOnClick = (i) => (e) => {
-    // if (mouseClicked)
     setCells(
       cells.map((cell, cellIndex) => {
         if (cellIndex === i) {
@@ -90,8 +113,6 @@ const Row = ({ cellActive, numSteps, instrument }) => {
         <Cell
           key={cellIndex}
           on={cell}
-          mouseClicked={mouseClicked}
-          setMouseClicked={setMouseClicked}
           cellHighlight={cellActive[cellIndex]}
           onClick={cellOnClick(cellIndex)}
           onContextMenu={onRightClick}

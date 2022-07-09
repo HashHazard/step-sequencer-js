@@ -1,4 +1,5 @@
 import { Fragment, useState } from 'react';
+import InputSlider from './InputSlider';
 import './ToolBar.css';
 
 const Play = ({ playing, setPlaying }) => {
@@ -16,79 +17,78 @@ const Play = ({ playing, setPlaying }) => {
   );
 };
 
-const Tempo = ({ beatDuration, setBeatDuration }) => {
-  const [invalid, setInvalid] = useState(false);
-  const handleSetTempo = (e) => {
-    const tempo = parseInt(e.target.value);
-    // beat duration = (60 seconds / BPM) * 1000 ms
-    const beatInMS = (60 / tempo) * 1000;
-    const subBeat = beatInMS / 4;
-    if (tempo > 0 && tempo <= 200 && typeof tempo === 'number') {
-      setInvalid(false);
-      if (beatDuration !== subBeat) setBeatDuration(parseInt(subBeat));
-    } else setInvalid(true);
-  };
-  return (
-    <Fragment>
-      <label>
-        Tempo
-        <input
-          style={{ background: `${invalid ? '#f2dede' : 'white'}` }}
-          type="number"
-          defaultValue={120}
-          onChange={handleSetTempo}
-        />
-      </label>
-    </Fragment>
-  );
-};
-
-const StepSize = ({ numSteps, setNumSteps, setPlaying }) => {
-  const [invalid, setInvalid] = useState(false);
-  const handleSetStep = (e) => {
-    const numofsteps = parseInt(e.target.value);
-    if (numofsteps > 0 && numofsteps <= 16 && typeof numofsteps === 'number') {
-      setInvalid(false);
-
-      if (numSteps !== numofsteps) {
-        setPlaying(false);
-        setNumSteps(numofsteps);
-      }
-    } else setInvalid(true);
-  };
-  return (
-    <Fragment>
-      <label>
-        Steps
-        <input
-          style={{ background: `${invalid ? '#F04E5B' : 'white'}` }}
-          type="number"
-          defaultValue={8}
-          onChange={handleSetStep}
-        />
-      </label>
-    </Fragment>
-  );
-};
-
 const ToolBar = ({
   playing,
   setPlaying,
   numSteps,
   setNumSteps,
-  beatDuration,
-  setBeatDuration,
+  tempo,
+  setTempo,
+  distortionValue,
+  setDistortionValue,
+  bitCrusherValue,
+  setBitCrusherValue,
+  chebyValue,
+  setChebyValue,
+  reverbValue,
+  setReverbValue,
 }) => {
+  const onInputChange =
+    (setState, isInt = true) =>
+    (e) => {
+      const value = isInt
+        ? parseInt(e.target.value)
+        : parseFloat(e.target.value);
+      setState(value);
+    };
+
   return (
     <div className="tool-container">
-      {/* <div className='element'></div> */}
+      <InputSlider
+        title="TEMPO"
+        defaultValue={tempo}
+        secondaryValue="BPM"
+        range={[60, 200]}
+        onInputChange={onInputChange(setTempo)}
+      />
+      <InputSlider
+        title="STEPS"
+        defaultValue={numSteps}
+        range={[1, 16]}
+        onInputChange={onInputChange(setNumSteps)}
+      />
+      <InputSlider
+        title="DISTORTION"
+        defaultValue={distortionValue}
+        range={[0, 1]}
+        onInputChange={onInputChange(setDistortionValue, false)}
+        step={0.1}
+      />
+      <InputSlider
+        title="BITCRUSHER"
+        defaultValue={bitCrusherValue}
+        range={[1, 16]}
+        onInputChange={onInputChange(setBitCrusherValue)}
+      />
+      <InputSlider
+        title="ELECTRO"
+        defaultValue={chebyValue}
+        range={[1, 100]}
+        onInputChange={onInputChange(setChebyValue)}
+      />
+      <InputSlider
+        title="REVERB"
+        defaultValue={reverbValue}
+        range={[1, 10]}
+        onInputChange={onInputChange(setReverbValue)}
+      />
       <Play playing={playing} setPlaying={setPlaying} />
-      <Tempo beatDuration={beatDuration} setBeatDuration={setBeatDuration} />
+      {/*<Tempo tempo={tempo} setTempo={setTempo} />
       <StepSize
         numSteps={numSteps}
         setNumSteps={setNumSteps}
         setPlaying={setPlaying}
-      />
+      /> */}
     </div>
   );
 };

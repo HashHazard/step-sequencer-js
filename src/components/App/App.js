@@ -4,25 +4,43 @@ import ToolBar from '../ToolBar/ToolBar';
 
 const App = () => {
   const [playing, setPlaying] = useState(false);
-  const [beatDuration, setBeatDuration] = useState(125);
+
+  // States for sliders
+  const [tempo, setTempo] = useState(120);
   const [numSteps, setNumSteps] = useState(8);
+  const [bitCrusherValue, setBitCrusherValue] = useState(16);
+  const [distortionValue, setDistortionValue] = useState(parseFloat('0'));
+  const [chebyValue, setChebyValue] = useState(1)
+  const [reverbValue, setReverbValue] = useState(1)
 
-  useEffect(() => console.log(numSteps), [numSteps]);
-
+  // MAKE FUCKING CONTEXT PROVIDER
   return (
     <Fragment>
       <ToolBar
         playing={playing}
         setPlaying={setPlaying}
-        beatDuration={beatDuration}
-        setBeatDuration={setBeatDuration}
+        tempo={tempo}
+        setTempo={setTempo}
         numSteps={numSteps}
         setNumSteps={setNumSteps}
+        distortionValue={distortionValue}
+        setDistortionValue={setDistortionValue}
+        bitCrusherValue={bitCrusherValue}
+        setBitCrusherValue={setBitCrusherValue}
+        chebyValue={chebyValue}
+        setChebyValue={setChebyValue}
+        reverbValue={reverbValue}
+        setReverbValue={setReverbValue}
       />
       <GridGenerator
         playing={playing}
-        beatDuration={beatDuration}
+        setPlaying={setPlaying}
+        tempo={tempo}
         numSteps={numSteps}
+        distortionValue={distortionValue}
+        bitCrusherValue={bitCrusherValue}
+        chebyValue={chebyValue}
+        reverbValue={reverbValue}
       />
     </Fragment>
   );
