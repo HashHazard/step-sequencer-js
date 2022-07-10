@@ -37,6 +37,7 @@ const GridGenerator = ({ playing, setPlaying, numSteps, tempo }) => {
 
   // Reinitialize cellActive state when number of steps changes
   useEffect(() => {
+    if (playing) setPlaying(() => false);
     activeCellIndex.current = 0;
     setCellActive(initCellActive);
   }, [numSteps, initCellActive]);
@@ -60,7 +61,7 @@ const GridGenerator = ({ playing, setPlaying, numSteps, tempo }) => {
       }, parseInt(60000 / (tempo * 4)));
     else clearInterval(interval.current);
     return () => clearInterval(interval.current);
-  }, [isPlaying, tempo, playing, cellActive, numSteps]);
+  }, [isPlaying, tempo]);
 
   return (
     <Fragment>
