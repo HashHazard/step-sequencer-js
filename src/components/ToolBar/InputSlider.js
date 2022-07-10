@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import "./ToolBar.css"
+
 const InputSlider = ({
   title,
   defaultValue,
@@ -13,10 +15,10 @@ const InputSlider = ({
     setTempValue(e.target.value)
   }
   return (
-    <div>
-      <div>{title}</div>
-      <div>{tempValue}
-      {secondaryValue && <span>{secondaryValue}</span>}
+    <div className='input-slide-container'>
+      <div className='input-title'>{title}</div>
+      <div className='input-value'>{tempValue}
+      {secondaryValue && <span className='input-value-secondary'>{secondaryValue}</span>}
       </div>
       <input
         type="range"

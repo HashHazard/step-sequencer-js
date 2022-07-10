@@ -1,4 +1,6 @@
-import { Fragment, useState } from 'react';
+import { IconContext } from 'react-icons';
+import { FaPlay, FaPause } from 'react-icons/fa';
+
 import InputSlider from './InputSlider';
 import './ToolBar.css';
 
@@ -7,11 +9,20 @@ const Play = ({ playing, setPlaying }) => {
     setPlaying(!playing);
   };
   return (
-    <div className="card">
-      <div className="gradient-border">
-        <div className="content-wrapper" onClick={onPlayClick}>
-          {playing ? 'Pause' : 'Play'}
-        </div>
+    <div className="a">
+      <div
+        className={`play-button ${playing ? 'play-button-select' : ''}`}
+        onClick={onPlayClick}
+      >
+        <IconContext.Provider
+          value={{
+            color: 'white',
+            className: 'play',
+            size: 30,
+          }}
+        >
+          {!playing ? <FaPlay /> : <FaPause />}
+        </IconContext.Provider>
       </div>
     </div>
   );
@@ -24,14 +35,6 @@ const ToolBar = ({
   setNumSteps,
   tempo,
   setTempo,
-  distortionValue,
-  setDistortionValue,
-  bitCrusherValue,
-  setBitCrusherValue,
-  chebyValue,
-  setChebyValue,
-  reverbValue,
-  setReverbValue,
 }) => {
   const onInputChange =
     (setState, isInt = true) =>
@@ -45,50 +48,20 @@ const ToolBar = ({
   return (
     <div className="tool-container">
       <InputSlider
-        title="TEMPO"
+        title="Tempo"
         defaultValue={tempo}
         secondaryValue="BPM"
         range={[60, 200]}
         onInputChange={onInputChange(setTempo)}
       />
+      <Play playing={playing} setPlaying={setPlaying} />
       <InputSlider
-        title="STEPS"
+        title="Steps"
         defaultValue={numSteps}
+        secondaryValue="1-16"
         range={[1, 16]}
         onInputChange={onInputChange(setNumSteps)}
       />
-      <InputSlider
-        title="DISTORTION"
-        defaultValue={distortionValue}
-        range={[0, 1]}
-        onInputChange={onInputChange(setDistortionValue, false)}
-        step={0.1}
-      />
-      <InputSlider
-        title="BITCRUSHER"
-        defaultValue={bitCrusherValue}
-        range={[1, 16]}
-        onInputChange={onInputChange(setBitCrusherValue)}
-      />
-      <InputSlider
-        title="ELECTRO"
-        defaultValue={chebyValue}
-        range={[1, 100]}
-        onInputChange={onInputChange(setChebyValue)}
-      />
-      <InputSlider
-        title="REVERB"
-        defaultValue={reverbValue}
-        range={[1, 10]}
-        onInputChange={onInputChange(setReverbValue)}
-      />
-      <Play playing={playing} setPlaying={setPlaying} />
-      {/*<Tempo tempo={tempo} setTempo={setTempo} />
-      <StepSize
-        numSteps={numSteps}
-        setNumSteps={setNumSteps}
-        setPlaying={setPlaying}
-      /> */}
     </div>
   );
 };

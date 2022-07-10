@@ -1,24 +1,10 @@
 import { Fragment, useEffect, useRef, useState } from 'react';
-import { Synth, MembraneSynth } from 'tone';
 
 import { kit } from './LoadSound';
-
-// import {
-//   boom,
-//   clap,
-//   hihat,
-//   kick,
-//   openhat,
-//   ride,
-//   snare,
-//   tink,
-//   tom,
-// } from './LoadSound';
-
 import './GridGenerator.css';
 import Row from './Row';
 
-const LED = ({ cell }) => {
+const LED = ({ cell, playing }) => {
   const on = cell ? 'led led-on' : 'led';
   return (
     <div className="led-container">
@@ -27,11 +13,11 @@ const LED = ({ cell }) => {
   );
 };
 
-const LEDstrip = ({ cellActive }) => {
+const LEDstrip = ({ cellActive, playing }) => {
   return (
     <div className="row-container">
       {cellActive.map((cell, cellIndex) => {
-        return <LED key={cellIndex} cell={cell} />;
+        return <LED key={cellIndex} cell={cell} playing={playing}/>;
       })}
     </div>
   );
@@ -53,7 +39,7 @@ const GridGenerator = ({
   // Counter index variable
   const activeCellIndex = useRef(0);
 
-  const [drumkit, setDrumkit] = useState(
+  const [drumkit, _] = useState(
     Array.from({ length: 9 }, () => false)
   );
 
@@ -84,21 +70,14 @@ const GridGenerator = ({
     return () => clearInterval(interval.current);
   }, [playing === true, tempo]);
 
-  // Tone js synth initialization
-  const synth = useRef(null);
-  useEffect(() => {
-    synth.current = new Synth().toDestination();
-  }, []);
-
   return (
     <Fragment>
-      <LEDstrip cellActive={cellActive} />
+      <LEDstrip cellActive={cellActive} playing={playing} />
       {drumkit.map((drum, drumIndex) => {
         return (
           <Row
             key={drumIndex}
             cellActive={cellActive}
-            synth={synth.current}
             numSteps={numSteps}
             instrument={kit[drumIndex]}
             distortionValue={distortionValue}
@@ -108,8 +87,6 @@ const GridGenerator = ({
           />
         );
       })}
-      {/* <Row cellActive={cellActive} synth={synth.current} numSteps={numSteps} />
-      <Row cellActive={cellActive} synth={synth.current} numSteps={numSteps} /> */}
     </Fragment>
   );
 };

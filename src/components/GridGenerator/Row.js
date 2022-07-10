@@ -1,12 +1,4 @@
-import {
-  Player,
-  loaded,
-  BitCrusher,
-  Distortion,
-  Destination,
-  Chebyshev,
-  Reverb,
-} from 'tone';
+import { Player, loaded } from 'tone';
 import { useEffect, useRef, useState } from 'react';
 
 import './GridGenerator.css';
@@ -25,15 +17,7 @@ const Cell = ({ on, cellHighlight, onClick, onContextMenu }) => {
 };
 
 ////// PARENT COMPONENT //////
-const Row = ({
-  cellActive,
-  numSteps,
-  instrument,
-  distortionValue,
-  bitCrusherValue,
-  chebyValue,
-  reverbValue
-}) => {
+const Row = ({ cellActive, numSteps, instrument }) => {
   const initialCellsState = Array.from({ length: numSteps }, () => false);
   const [cells, setCells] = useState(initialCellsState);
 
@@ -41,46 +25,11 @@ const Row = ({
   useEffect(() => setCells(initialCellsState), [numSteps]);
 
   const synth = useRef(null);
-  const crusher = useRef(null);
-  const distortion = useRef(null);
-  const cheby = useRef(null);
-  const reverb = useRef(null)
   useEffect(() => {
-    // synth.current = new Synth().toDestination();
-    // synth.current = new PolySynth(MembraneSynth).toDestination()
-
     synth.current = new Player(instrument).toDestination();
-
-    // synth.current = new Player(instrument);
-
-    distortion.current = new Distortion().toDestination()
-
-    crusher.current = new BitCrusher(16).toDestination()
-    cheby.current = new Chebyshev(1).toDestination()
-
-    reverb.current = new Reverb(undefined).toDestination()
-
-    // synth.current.fan(
-    //   cheby.current,
-    //   crusher.current,
-    //   distortion.current,
-    //   reverb.current,
-    //   // Destination
-    // );
-
-    // synth.current = new MembraneSynth().toDestination()
   }, []);
 
-  useEffect(() => {
-    distortion.current.distortion = distortionValue;
-    crusher.current.bits = bitCrusherValue;
-    cheby.current.order = chebyValue;
-    // reverb.current.decay = reverbValue;
-  }, [distortionValue, chebyValue]);
-
   const playSound = () => {
-    // const notes = ['D4', 'F4', 'A4']
-    // synth.current.triggerAttackRelease('C2', '8n');
     loaded().then(() => {
       synth.current.start();
     });
@@ -88,7 +37,7 @@ const Row = ({
 
   useEffect(() => {
     cellActive.map((aCell, aCellIndex) => {
-      if (aCell && cells[aCellIndex]) playSound();
+      if (aCell && cells[aCellIndex]) return playSound();
     });
   }, [cellActive]);
 
